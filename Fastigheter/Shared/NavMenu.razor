@@ -1,0 +1,71 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Fastigheter.AuthProviders 
+@inject TestAuthStateProvider Auth
+@inject NavigationManager NaviManager
+
+<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">Fastigheter Red</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Startsidan
+            </NavLink>
+        </li>
+        <AuthorizeView>
+            <NotAuthorized>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/Login" Match="NavLinkMatch.All">
+                        <span class="oi oi-account-login" aria-hidden="true"></span> Logga in
+                    </NavLink>
+                </li>
+            </NotAuthorized>
+        </AuthorizeView>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/RealEstates" Match="NavLinkMatch.All">
+                <span class="oi oi-align-center" aria-hidden="true"></span> Fastigheter
+            </NavLink>
+        </li>
+        <AuthorizeView>
+            <Authorized>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/Users" Match="NavLinkMatch.All">
+                        <span class="oi oi-dollar" aria-hidden="true"></span> Lägg upp en fastighet
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+
+                    <NavLink class="nav-link" href="myrealestates" Match="NavLinkMatch.All">
+                        <span class="oi oi-home" aria-hidden="true"></span> Mina Fastigheter
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink @onclick="(()=> onLogout())" class="nav-link" href="/account/logout" Match="NavLinkMatch.All">
+                        <span class="oi oi-account-logout" aria-hidden="true"></span> Logga Ut
+                    </NavLink>
+                </li>
+            </Authorized>
+        </AuthorizeView>
+    </ul>
+
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private async void onLogout()
+    {
+        await Auth.Logout();
+        NaviManager.NavigateTo("", forceLoad: true);
+    }
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

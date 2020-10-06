@@ -1,0 +1,44 @@
+﻿@page "/myrealestates/{Id:int}"
+@using Fastigheter.Data.Services
+@using TeamRedzFastigheter.Shared.Models.RealEstateModel
+@using Microsoft.AspNetCore.Authorization
+@inject RealEstateService Service
+@attribute [Authorize]
+<h3>Din Annons</h3>
+
+@if (realestate == null)
+{
+    <h3>Laddar in...</h3>
+}
+else
+{
+    <div class="list-group orders-list">
+        <div class="list-group-item">
+            <div class="col">
+                <h5>@realestate.AdCreated</h5>
+                Titel<br />
+                <strong>@realestate.Title</strong><br />
+                Beskrivning<br />
+                <strong>@realestate.Description</strong><br />
+            </div>
+            <div class="col">
+                Pris: <strong>@realestate.PurchasePrice kr</strong>
+            </div>
+            <div class="col flex-grow-0">
+                <a class="btn btn-warning">
+                    Ta bort annons &gt;
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+    RealEstateDto realestate;
+
+    protected override async Task OnInitializedAsync()
+    {
+        realestate = await Service.GetRealEstateDetailAsync(Id);
+    }
+}

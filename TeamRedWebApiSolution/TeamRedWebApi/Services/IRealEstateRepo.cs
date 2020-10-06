@@ -1,0 +1,52 @@
+﻿using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Threading.Tasks;
+using TeamRedProject.Enitites;
+
+namespace TeamRedProject.Services
+{
+    public interface IRealEstateRepo
+    {
+        //Realestate
+        #region
+        IEnumerable<RealEstate> GetRealEstates(int userId);
+        RealEstate GetRealEstate(int realEstateId);
+        void AddRealEstate(int userid, RealEstate realEstate);
+        void UpdateRealEstate(RealEstate realEstate);
+        void DeleteRealEstate(RealEstate realEstate);
+        IEnumerable<RealEstate> GetRealEstates(string skip, string take);
+        public IEnumerable<RealEstate> GetRealEstateByUser(string username);
+        #endregion
+
+        //User
+        #region
+        IEnumerable<User> GetUsers();
+        User GetUser(string userName);
+        User GetUser(int userId);
+        IEnumerable<User> GetUsers(IEnumerable<int> userIds);
+        void AddUser(User user);
+        void DeleteUser(User user);
+        void UpdateUser(User user);
+        bool UserExists(int userId);
+        bool RateUser(string username, int userId, int value);
+        #endregion
+
+        //Comment
+        #region
+        Comment GetComment(int commentId, int userId);
+        IEnumerable<Comment> GetComments(int userId);
+        IEnumerable<Comment> GetCommentsFromRealEstate(int realEstateId, string skip, string take);
+        IEnumerable<Comment> GetCommentsFromUser(string userName, string skip, string take);
+        void AddComment(string username, Comment comment);
+        void UpdateComment(Comment comment);
+        void DeleteComment(Comment comment);
+        #endregion
+
+        JwtSecurityToken AuthenticateUser(string name, string password);
+
+        bool Save();
+    }
+}

@@ -1,0 +1,59 @@
+﻿@page "/RealEstates"
+@using Data.Services
+@using TeamRedzFastigheter.Shared.Models.RealEstateModel
+@inject RealEstateService Service
+<h1>Fastigheter till salu</h1>
+@if (Realestates == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <section id="RealEstates">
+        <div class="row">
+            @foreach (var realestate in Realestates)
+            {
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <img @onclick="(()=> ShowSelectedRealestateDialog(realestate))" class="card-img-top" src="https://i.gyazo.com/aa12d509b2c67f2dbc2bbe8f46b9417d.png" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@realestate.Title</h5>
+                            <p class="card-text-">@realestate.Description<br />@realestate.Address<br />@realestate.PurchasePrice kr</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+}
+
+@if (showingDetailsDialog)
+{
+    <RealestateDetails Realestate="SelectedRealEstate" OnCancel="CancelSelectedRealestateDialog" />
+}
+
+@code {
+
+
+
+    RealEstateDto SelectedRealEstate;
+    bool showingDetailsDialog;
+    private RealEstateDto[] Realestates;
+
+    void ShowSelectedRealestateDialog(RealEstateDto Realestate)
+    {
+        SelectedRealEstate = Realestate;
+        showingDetailsDialog = true;
+    }
+    void CancelSelectedRealestateDialog()
+    {
+        SelectedRealEstate = null;
+        showingDetailsDialog = false;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Realestates = await Service.GetRealEstateAsync();
+
+    }
+}
