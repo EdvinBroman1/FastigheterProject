@@ -1,0 +1,199 @@
+﻿@page "/addEstate"
+
+<html>
+<head>
+    <title>Lägg upp annons</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+   
+
+</head>
+<body class=form-body>
+    <div class="testbox">
+        <form action="/">
+            <div class="banner">
+                <h1 style="font-weight:600">Lägg upp annons</h1>
+            </div>
+
+            <div class="item">
+                <p>Titel</p>
+                <div class="name-item">
+                    <input type="text" name="name" placeholder="Skriv namnet på din annons" />
+                </div>
+
+            </div>
+            <div class="question">
+                <p>Typ av fastighet</p>
+                <div class="question-answer">
+                    <div>
+                        <input type="radio" value="none" id="radio_1" name="gender" />
+                        <label for="radio_1" class="radio"><span>Lägenhet</span></label>
+                    </div>
+                    <div>
+                        <input type="radio" value="none" id="radio_2" name="gender" />
+                        <label for="radio_2" class="radio"><span>Villa</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item">
+                <p>Beskrivning av fastighet</p>
+                <textarea rows="3"></textarea>
+            </div>
+            <div class="question">
+                <p>Kan hyras?</p>
+                <div class="question-answer">
+                    <div>
+                        <input type="radio" value="none" id="radio_1" name="gender" />
+                        <label for="radio_1" class="radio"><span>Ja</span></label>
+                    </div>
+                    <div>
+                        <input type="radio" value="none" id="radio_2" name="gender" />
+                        <label for="radio_2" class="radio"><span>Nej</span></label>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <p>Byggår</p>
+                <select required>
+                    <option value="">2020</option>
+                    <option value="1">2019</option>
+                    <option value="2">2018</option>
+                    <option value="3">2017</option>
+                    <option value="4">2016</option>
+                    <option value="5">2015</option>
+                    <option value="6">2014</option>
+                    <option value="7">2013</option>
+                    <option value="8">2012</option>
+                    <option value="9">2011</option>
+                    <option value="10">2010</option>
+                    <option value="11">2009</option>
+                    <option value="12">2008</option>
+                    <option value="13">2007</option>
+                    <option value="14">2006</option>
+                    <option value="15">2005</option>
+                    <option value="16">2004</option>
+                    <option value="17">2003</option>
+                    <option value="18">2002</option>
+                    <option value="19">2001</option>
+                    <option value="20">2000</option>
+                    <option value="21">1999</option>
+                    <option value="22">1998</option>
+                    <option value="23">1997</option>
+                    <option value="24">1996</option>
+                    <option value="25">1995</option>
+                    <option value="26">1994</option>
+                    <option value="27">1993</option>
+                    <option value="28">1992</option>
+                    <option value="29">1991</option>
+                    <option value="30">1990</option>
+                    <option value="31">1989</option>
+                    <option value="32">1988</option>
+                    <option value="33">1987</option>
+                    <option value="34">1986</option>
+                    <option value="35">1985</option>
+                    <option value="36">1984</option>
+                    <option value="37">1983</option>
+                    <option value="38">1982</option>
+                    <option value="21">1981</option>
+                    <option value="22">1980</option>
+                    <option value="23">1979</option>
+                    <option value="24">1978</option>
+                    <option value="25">1977</option>
+                    <option value="26">1976</option>
+                    <option value="27">1975</option>
+                    <option value="28">1974</option>
+                    <option value="29">1973</option>
+                    <option value="30">1972</option>
+                    <option value="31">1971</option>
+                    <option value="32">1970</option>
+                    <option value="33">1969</option>
+                    <option value="34">1968</option>
+                    <option value="35">1967</option>
+                    <option value="36">1966</option>
+                    <option value="37">1965</option>
+                    <option value="38">1964</option>
+                    <option value="39">1975</option>
+                    <option value="40">1974</option>
+                    <option value="41">1973</option>
+                    <option value="42">1972</option>
+                    <option value="43">1971</option>
+                    <option value="44">1970</option>
+                    <option value="45">1969</option>
+                    <option value="46">1968</option>
+                    <option value="47">1967</option>
+                    <option value="48">1966</option>
+                    <option value="49">1965</option>
+                    <option value="50">1964</option>
+                    <option value="51">1969</option>
+                    <option value="52">1968</option>
+                    <option value="53">1967</option>
+                    <option value="54">1966</option>
+                    <option value="55">1965</option>
+                    <option value="56">1964</option>
+                    <option value="57">1963</option>
+                    <option value="58">1962</option>
+                    <option value="59">1961</option>
+                    <option value="60">1960</option>
+                    <option value="61">1959</option>
+                    <option value="62">1958</option>
+                    <option value="63">1957</option>
+                    <option value="64">1956</option>
+                    <option value="65">1955</option>
+                    <option value="66">1954</option>
+                    <option value="67">1953</option>
+                    <option value="68">1952</option>
+                    <option value="69">1951</option>
+                    <option value="70">1950</option>
+                    <option value="71">1949</option>
+                    <option value="72">1948</option>
+                    <option value="73">1947</option>
+                    <option value="74">1946</option>
+                    <option value="75">1945</option>
+                    <option value="76">1944</option>
+                    <option value="77">1943</option>
+                    <option value="78">1942</option>
+                    <option value="79">1941</option>
+                    <option value="80">1940</option>
+                    <option value="81">1939</option>
+                    <option value="82">1938</option>
+                    <option value="83">1937</option>
+                    <option value="84">1936</option>
+                    <option value="85">1935</option>
+                    <option value="86">1934</option>
+                    <option value="87">1933</option>
+                    <option value="88">1932</option>
+                    <option value="89">1931</option>
+                    <option value="90">1930</option>
+                    <option value="91">1929</option>
+                    <option value="92">1928</option>
+                    <option value="93">1927</option>
+                    <option value="94">1926</option>
+                    <option value="95">1925</option>
+                    <option value="96">1924</option>
+                    <option value="97">1923</option>
+                    <option value="98">1922</option>
+                    <option value="99">1921</option>
+                    <option value="100">1920</option>
+                    <option value="101">1919</option>
+                </select>
+            </div>
+
+
+            <div class="item">
+                Pris vid köp:<input rows="1">kr
+            </div>
+            <div class="item">
+                Pris vid uthyrning:<input rows="1">kr
+            </div>
+            <div class="btn-block">
+                <button type="submit" href="/">Lägg upp annons</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+
+@code {
+
+}
