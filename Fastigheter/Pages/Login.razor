@@ -3,12 +3,12 @@
 @inject TestAuthStateProvider Auth
 @inject NavigationManager NaviManager
 @using Fastigheter.AuthProviders
-
+@using System.ComponentModel.DataAnnotations;
 <div class="col-md-6 offset-md-3 mt-5">
     <div class="card">
         <h4 class="card-header">Välkommen till Fastigheter Red</h4>
         <div class="card-body">
-            <img src="https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png" 
+            <img src="https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png"
                  alt="ikon kunde ej laddas" height="40" width="40" />
             <EditForm Model="@model" OnSubmit="LogIn">
                 <DataAnnotationsValidator />
@@ -23,33 +23,42 @@
                 <button class="btn btn-primary">
                     Logga in
                 </button>
+                @if (IncorrectCredentials)
+                {
+                    <h7 style="color: #FF0000">Felaktigt Lösen/Username, vänligen försök igen</h7>
+                }
             </EditForm>
         </div>
     </div>
 </div>
-    @code {
-        private LoginModel model = new LoginModel();
-        string token = string.Empty;
+@code {
+    private LoginModel model = new LoginModel();
+    string token = string.Empty;
+    bool IncorrectCredentials;
 
+    async void LogIn()
+    {
+        token = await Service.GetTokenAsync(model.UserName, model.Password);
 
-        async void LogIn()
+        if (token.Contains("access_token"))
         {
-            token = await Service.GetTokenAsync(model.UserName, model.Password);
-
-            if (token.Contains("access_token"))
-            {
-                await Auth.Login(token);
-                NaviManager.NavigateTo("", forceLoad: true);
-            }
+            IncorrectCredentials = false;
+            await Auth.Login(token);
+            NaviManager.NavigateTo("", forceLoad: true);
         }
-
-        private class LoginModel
+        else
         {
-            [Required]
-            [DataType(DataType.Text)]
-            public string UserName { get; set; }
-            [Required]
-            [DataType(DataType.Password)]
-            public string Password { get; set; }
+            IncorrectCredentials = true;
         }
     }
+
+    private class LoginModel
+    {
+        [Required]
+        [DataType(DataType.Text)]
+        public string UserName { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+    }
+}

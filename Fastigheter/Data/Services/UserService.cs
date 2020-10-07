@@ -51,5 +51,12 @@ namespace Fastigheter.Data.Services
             }
             return null;
         }
+
+        public async Task<UserDto> GetUser(string username)
+        {
+            string respons = await _httpClient.GetStringAsync(_ApiBaseAdress + "/" + username);
+            var user = JsonConvert.DeserializeObject<UserDto>(respons);
+            return user;
+        }
     }
 }

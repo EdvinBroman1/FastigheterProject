@@ -9,6 +9,7 @@ using Fastigheter.AuthProviders;
 using Fastigheter.Data.Services;
 using System.Net.Http;
 using Microsoft.AspNetCore.Http;
+using Fastigheter.Data;
 
 namespace Fastigheter
 {
@@ -22,15 +23,17 @@ namespace Fastigheter
             builder.Services.AddAuthorizationCore();
             builder.Services.AddSingleton<HttpClient>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            builder.Services.AddSingleton<TokenService>();
             builder.Services.AddScoped<CustomLocalStorageService>();
             builder.Services.AddScoped<AuthenticationStateProvider, TestAuthStateProvider>();
             builder.Services.AddScoped<TestAuthStateProvider>();
+            builder.Services.AddSingleton<TokenService>();
             builder.Services.AddSingleton<RealEstateService>();
+            builder.Services.AddSingleton<UserService>();
             builder.Services.AddSingleton<CommentsService>();
+            builder.Services.AddScoped<LoggedInData>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddBaseAddressHttpClient();
+           builder.Services.AddBaseAddressHttpClient();
 
             await builder.Build().RunAsync();
         }

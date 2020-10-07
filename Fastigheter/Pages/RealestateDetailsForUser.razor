@@ -36,7 +36,7 @@ else
 @code {
     [Parameter] public int Id { get; set; }
     RealEstateDto realestate;
-
+   
     protected override async Task OnInitializedAsync()
     {
         realestate = await Service.GetRealEstateDetailAsync(Id);

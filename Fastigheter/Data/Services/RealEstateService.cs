@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using TeamRedzFastigheter.Shared.Models.RealEstateModel;
+using Fastigheter.Data;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace Fastigheter.Data.Services
 {
@@ -121,6 +124,20 @@ namespace Fastigheter.Data.Services
             }
             return null;
 
+        }
+
+        public async Task<bool> CreateRealestate(int userid, RealEstateDto realestate, string token)
+        {
+            string sUrl = _ApiUrlBase + $"api/RealEstates";
+
+            string RealEstateJson = JsonConvert.SerializeObject(realestate);
+
+             var stringContent = new StringContent(RealEstateJson, Encoding.UTF8, "application/json");
+        
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.PostAsync(sUrl, stringContent);
+            Console.WriteLine(response);
+            return true;
         }
     }
 }
