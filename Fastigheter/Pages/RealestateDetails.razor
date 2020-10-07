@@ -37,9 +37,9 @@
 </div>
 
 @code {
-    [Parameter] public EventCallback OnCancel { get; set; } = new EventCallback();
-    [Parameter] public RealEstateDto Realestate { get; set; } = new RealEstateDto();
-    private IEnumerable<CommentDto> Comments = new List<CommentDto>();
+    [Parameter] public EventCallback OnCancel { get; set; }
+    [Parameter] public RealEstateDto Realestate { get; set; }
+    private IEnumerable<CommentDto> Comments;
 
 
     [CascadingParameter]
@@ -50,11 +50,10 @@
 
         var authstate = await AuthState;
         var token = await LID.GetToken();
+
         if(token != null)
         {
           Comments = await Service.GetComments(Realestate.Id,token);
         }
-
-
     }
 }
