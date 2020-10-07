@@ -30,7 +30,7 @@ namespace Fastigheter
             builder.Services.AddSingleton<CommentsService>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddBaseAddressHttpClient();
+           
 
             await builder.Build().RunAsync();
         }

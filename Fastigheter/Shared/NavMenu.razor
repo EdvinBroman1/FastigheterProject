@@ -26,6 +26,15 @@
                 </li>
             </NotAuthorized>
         </AuthorizeView>
+        <AuthorizeView>
+            <NotAuthorized>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/Registerpage" Match="NavLinkMatch.All">
+                        <span class="oi oi-account-login" aria-hidden="true"></span>Registrera
+                    </NavLink>
+                </li>
+            </NotAuthorized>
+        </AuthorizeView>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="/RealEstates" Match="NavLinkMatch.All">
                 <span class="oi oi-align-center" aria-hidden="true"></span> Fastigheter
@@ -52,7 +61,7 @@
             </Authorized>
         </AuthorizeView>
     </ul>
-
+    
 </div>
 
 @code {
