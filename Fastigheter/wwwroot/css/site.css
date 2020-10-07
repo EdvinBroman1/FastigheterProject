@@ -343,13 +343,16 @@ form-h1 {
 }
 
 form {
-    width: 100%;
+    width: 45%;
     padding: 20px;
     border-radius: 6px;
     background: #fff;
     box-shadow: 0 0 25px 0 #195e83;
 }
-
+.required
+{
+    color:red;
+}
 .banner {
     position: relative;
     height: 210px;
