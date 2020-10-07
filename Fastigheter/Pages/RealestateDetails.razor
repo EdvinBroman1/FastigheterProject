@@ -1,7 +1,9 @@
 ﻿@using TeamRedzFastigheter.Shared.Models.RealEstateModel
 @using TeamRedzFastigheter.Shared.Models.CommentModel
 @inject Fastigheter.Data.Services.CommentsService Service
-
+@inject Data.LoggedInData LID
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authorization;
 
 <div class="dialog-container">
     <div class="dialog">
@@ -20,28 +22,39 @@
             <button class="btn btn-success ml-auto">Boka visning ></button>
         </div>
         <h3>Kommentarer</h3><br />
-        @if (Comments == null)
-        {
-            <h2>Laddar in kommentarer...</h2>
-        }
-        else
+        @if (Comments != null)
         {
             @foreach (var comment in Comments)
             {
                 <h8>@comment.UserName: @comment.Content</h8><br />
             }
         }
+        else
+        {
+            <h2>Laddar in kommentarer...</h2>
+        }
     </div>
 </div>
 
 @code {
-    [Parameter] public EventCallback OnCancel { get; set; }
-    [Parameter] public RealEstateDto Realestate { get; set; }
-    private IEnumerable<CommentDto> Comments;
+    [Parameter] public EventCallback OnCancel { get; set; } = new EventCallback();
+    [Parameter] public RealEstateDto Realestate { get; set; } = new RealEstateDto();
+    private IEnumerable<CommentDto> Comments = new List<CommentDto>();
 
-protected override async Task OnInitializedAsync()
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        Comments = await Service.GetComments(Realestate.Id);
+
+        var authstate = await AuthState;
+        var token = await LID.GetToken();
+        if(token != null)
+        {
+          Comments = await Service.GetComments(Realestate.Id,token);
+        }
+
 
     }
 }

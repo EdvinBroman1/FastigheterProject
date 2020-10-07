@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 using TeamRedzFastigheter.Shared.Models.RealEstateModel;
 using TeamRedzFastigheter.Shared.Models.CommentModel;
 using TeamRedzFastigheter.Shared.Enitites;
+using System.Text;
+using System.Net.Http.Headers;
 
 namespace Fastigheter.Data.Services
 {
@@ -22,14 +24,23 @@ namespace Fastigheter.Data.Services
             _httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<CommentDto>> GetComments(int RealEstateId)
+        public async Task<IEnumerable<CommentDto>> GetComments(int RealEstateId,string token)
         {
             IEnumerable<CommentDto> Comments;
             string sUrl = _ApiUrlBase + "api/comments/" + RealEstateId;
+            Uri uri = new Uri(sUrl);
+            var requestMessage = new HttpRequestMessage();
+            requestMessage.Method = HttpMethod.Get;
+            requestMessage.RequestUri = uri;
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+       
+
             try
             {
-                string response = await _httpClient.GetStringAsync(sUrl);
-                Comments = JsonConvert.DeserializeObject<IEnumerable<CommentDto>>(response);
+                var response = await _httpClient.SendAsync(requestMessage);
+                string responseToString = await response.Content.ReadAsStringAsync();
+                Comments = JsonConvert.DeserializeObject<IEnumerable<CommentDto>>(responseToString);
+
                 return Comments;
             }
             catch (SocketException e)

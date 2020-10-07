@@ -21,8 +21,14 @@ namespace Fastigheter.Data
         public async Task<string> GetToken()
         {
             var savedToken = await this._storage.GetItem<string>(tokenKey);
-            string data = JObject.Parse(savedToken)["access_token"].ToString();
-            return data;
+            if(savedToken != null)
+            {
+                string data = JObject.Parse(savedToken)["access_token"].ToString();
+                return data;
+            }
+            return null;
+            
+          
         }
 
     }
