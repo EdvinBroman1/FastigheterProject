@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +15,7 @@ namespace Fastigheter.Data.Services
         private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private const string _ApiUrlBase = "http://localhost:5000/token";
-
+        private Task<AuthenticationState> AuthState { get; set; }
 
         public TokenService(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
         {

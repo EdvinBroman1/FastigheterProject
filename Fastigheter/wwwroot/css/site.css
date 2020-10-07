@@ -308,6 +308,7 @@ app {
     text-align: right;
 }
 
+
 /*Submit form*/
 .form-body {
     min-height: 500px;
@@ -325,7 +326,7 @@ body, div, form, input, select, textarea, p {
     line-height: 22px;
 }
 
-h1 {
+form-h1 {
     position: absolute;
     margin: 0;
     font-size: 38px;
@@ -355,7 +356,7 @@ form {
 .banner {
     position: relative;
     height: 210px;
-    background-image: url("/uploads/media/default/0001/01/b42dddca6e6a31b300c6ce26cb9dcac565b2f869.jpeg");
+    background-image: url("https://www.vastkustvillan.se/wp-content/uploads/2014/09/vastkustvillan-att-bygga-hus.jpg");
     background-size: cover;
     display: flex;
     justify-content: center;
