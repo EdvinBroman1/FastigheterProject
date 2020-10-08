@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 using TeamRedProject.Enitites;
 using TeamRedProject.Services;
 using TeamRedWebApi.Models.CommentModel;
@@ -76,8 +77,8 @@ namespace TeamRedWebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
-        [HttpPost]
-        public ActionResult<CommentDto> CreateComment(CreateCommentDto comment)
+        [HttpPost()]
+        public ActionResult<CommentDto> CreateComment(Comment comment)
         {
             var commentEntity = _mapper.Map<Comment>(comment);
 

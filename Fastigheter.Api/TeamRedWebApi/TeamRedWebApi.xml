@@ -40,7 +40,7 @@
             <returns>Returns the Content, username and when the comment was created</returns>
             /// <response code="200">Returns the requested comment</response>
         </member>
-        <member name="M:TeamRedWebApi.Controllers.CommentsController.CreateComment(TeamRedWebApi.Models.CommentModel.CreateCommentDto)">
+        <member name="M:TeamRedWebApi.Controllers.CommentsController.CreateComment(TeamRedProject.Enitites.Comment)">
             <summary>
             Create a comment
             </summary>

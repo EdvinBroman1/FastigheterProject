@@ -33,8 +33,6 @@ namespace Fastigheter.Data.Services
                { "username", userName },
                { "password", Password }
             };
-
-
             string json = JsonConvert.SerializeObject(values);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(_ApiUrlBase, httpContent);
