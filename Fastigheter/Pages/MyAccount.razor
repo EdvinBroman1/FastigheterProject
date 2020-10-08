@@ -1,0 +1,41 @@
+﻿@page "/myaccount/{name}"
+@using Fastigheter.Data.Services
+@using TeamRedzFastigheter.Shared.Models.UserModel
+@using Microsoft.AspNetCore.Authorization
+@inject UserService userService
+@attribute [Authorize]
+
+@if (User != null)
+{
+<h3>Användare</h3>
+<div class="list-group orders-list">
+    <div class="list-group-item">
+        <div class="col">
+            Namn<br />
+            <strong>@User.UserName</strong><br />
+        </div>
+        <div class="col">
+            Rating <strong>@User.AverageRating</strong>
+        </div>
+
+        <div class="col flex-grow-0">
+            <a class="btn btn-warning">
+                Anmäl
+            </a>
+        </div>
+    </div>
+</div>
+}
+
+@code {
+    [Parameter] public string name { get; set; }
+    UserDto User;
+
+    protected override async Task OnInitializedAsync()
+    {
+        User = await userService.GetUser(name);
+    }
+
+}
+
+

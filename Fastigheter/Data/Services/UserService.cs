@@ -58,6 +58,7 @@ namespace Fastigheter.Data.Services
         {
             string respons = await _httpClient.GetStringAsync(_ApiBaseAdress + "/" + username);
             var user = JsonConvert.DeserializeObject<UserDto>(respons);
+
             return user;
         }
 
