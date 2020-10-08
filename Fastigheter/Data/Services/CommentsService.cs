@@ -17,9 +17,8 @@ namespace Fastigheter.Data.Services
     [Authorize]
     public class CommentsService
     {
-        private const string _ApiUrlBase = "http://localhost:5000/api/comments/";
+        private string _ApiUrlBase = "http://localhost:5000/api/comments/";
         private readonly HttpClient _httpClient;
-        //private string sUrl = _ApiUrlBase + "api/comments/";
         public CommentsService(HttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -28,14 +27,7 @@ namespace Fastigheter.Data.Services
         public async Task<IEnumerable<CommentDto>> GetComments(int RealEstateId,string token)
         {
             IEnumerable<CommentDto> Comments;
-            /*Uri uri = new Uri(_ApiUrlBase+RealEstateId);
-            var requestMessage = new HttpRequestMessage();
-            requestMessage.Method = HttpMethod.Get;
-            requestMessage.RequestUri = uri;
-            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            */
-            HttpRequestMessage requestMessage = GetRequestMessage(RealEstateId.ToString(),token);
-
+            HttpRequestMessage requestMessage = GetRequestMessage(RealEstateId.ToString(), token);
             try
             {
                 var response = await _httpClient.SendAsync(requestMessage);
@@ -60,14 +52,21 @@ namespace Fastigheter.Data.Services
             return null;
         }
 
-        public async Task<CommentDto> CreateComment(string RealEstateId, CommentDto comment,int token)
+        public async Task<bool> CreateComment(Comment comment,string token,int RealEstateId)
         {
-            string sUrl = _ApiUrlBase + "api/comments/" + RealEstateId;
-            var response =await _httpClient.GetAsync(sUrl);
-            var json = await response.Content.ReadAsStringAsync();
+            _ApiUrlBase = "http://localhost:5000/api/comments/";
+            string sUrl = _ApiUrlBase;
+            string commentJson = JsonConvert.SerializeObject(comment);
 
+            var stringContent = new StringContent(commentJson, Encoding.UTF8, "application/json");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.PostAsync(sUrl, stringContent);
+            return true;
+        }
 
-            return null;
+        private Task InvokeAsync(Action p)
+        {
+            throw new NotImplementedException();
         }
 
         private HttpRequestMessage GetRequestMessage(string value, string token)
