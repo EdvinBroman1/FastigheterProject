@@ -6,6 +6,7 @@
 @inject Data.Services.UserService UserService
 @inject Data.Services.RealEstateService RealEstateService
 @inject Data.LoggedInData LID
+@inject NavigationManager NaviManager
 @attribute [Authorize]
 <style>
     form {
@@ -88,9 +89,9 @@
             </div>
             @if (RealEstate.CanBeRented)
             {
-            <div class="item">
-                Pris vid uthyrning:<input @bind="RealEstate.RentingPrice" rows="1">kr
-            </div>
+                <div class="item">
+                    Pris vid uthyrning:<input @bind="RealEstate.RentingPrice" rows="1">kr
+                </div>
             }
             <p>Kontakt Information</p>
             <div class="name-item">
@@ -99,6 +100,12 @@
             <div class="btn-block">
                 <div class="btn btn-primary" @onclick="@Upload">Lägg upp annons</div>
             </div>
+            @if (Success)
+            {
+                <div class="alert alert-success" role="alert">
+                    Din fastighet har lagts upp!
+                </div>
+            }
         </form>
     </div>
 </body>
@@ -106,9 +113,9 @@
 
 @code {
 
-    RealEstateDto RealEstate = new RealEstateDto();
-    UserDto user;
-    bool Success;
+        RealEstateDto RealEstate = new RealEstateDto();
+        UserDto user;
+        bool Success;
 
     [CascadingParameter]
     public Task<AuthenticationState> AuthState { get; set; }
@@ -123,7 +130,12 @@
         RealEstate.Contact = "TempContact";
         user = await UserService.GetUser(authstate.User.Claims.FirstOrDefault(x => x.Type.Equals("unique_name", StringComparison.OrdinalIgnoreCase))?.Value);
         Success = await RealEstateService.CreateRealestate(user.Id, RealEstate, token);
-
+        this.StateHasChanged();
+        if (Success)
+        {
+            await Task.Delay(1500);
+            NaviManager.NavigateTo("/myrealestates");
+        }
 
 
     }

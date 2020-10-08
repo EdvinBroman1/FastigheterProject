@@ -35,7 +35,8 @@
             <h4>Kommentarer</h4><br />
             @foreach (var comment in Comments)
             {
-    <h8>@comment.CreatedOn.Date <a href="MyAccount/@comment.UserName">@comment.UserName:</a> @comment.Content</h8><br />
+    <h4 class="media-heading user_name"><a href="MyAccount/@comment.UserName">@comment.UserName</a><br />@comment.Content</h4>
+              <br />
             }
         }
         else
