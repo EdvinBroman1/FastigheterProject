@@ -136,7 +136,9 @@ namespace Fastigheter.Data.Services
         
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.PostAsync(sUrl, stringContent);
+            Console.WriteLine(response);
             return true;
         }
+
     }
 }

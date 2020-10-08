@@ -7,18 +7,16 @@
 @inject Data.Services.RealEstateService RealEstateService
 @inject Data.LoggedInData LID
 @attribute [Authorize]
+<style>
+    form {
+        width: 100%;
+    }
+</style>
 <html>
 <head>
     <title>Lägg upp annons</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-    <style>
-        form
-        {
-            width:100%;
-          
-        }
-    </style>
 </head>
 <body class=form-body>
     <div class="testbox">
@@ -71,7 +69,7 @@
             <div>
                 <p>Byggår</p>
                 <select required @bind="RealEstate.ConstructionYear">
-                    @for (int i = 0, y = 2020; i < 101; i++, y--)
+                    @for (int y = 2020; y > 1600; y--)
                     {
                         <option value="@y">@y</option>
                     }
@@ -82,9 +80,12 @@
             <div class="item">
                 Pris vid köp:<input @bind="RealEstate.PurchasePrice" rows="1">kr
             </div>
+            @if (RealEstate.CanBeRented)
+            {
             <div class="item">
                 Pris vid uthyrning:<input @bind="RealEstate.RentingPrice" rows="1">kr
             </div>
+            }
             <p>Kontakt Information</p>
             <div class="name-item">
                 <input type="text" name="address" @bind="RealEstate.Contact" placeholder="E.g Telefonnummer / epost" />

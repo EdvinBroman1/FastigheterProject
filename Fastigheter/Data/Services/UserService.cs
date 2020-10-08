@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Sockets;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TeamRedzFastigheter.Shared.Models.UserModel;
@@ -23,7 +25,7 @@ namespace Fastigheter.Data.Services
             throw new System.ArgumentNullException(nameof(httpClient));
             _httpContextAccessor = httpContextAccessor ??
             throw new System.ArgumentNullException(nameof(httpContextAccessor));
-        } 
+        }
 
         public async Task<UserDto[]> GetAllUsers()
         {
@@ -31,7 +33,7 @@ namespace Fastigheter.Data.Services
             {
                 string respons = await _httpClient.GetStringAsync(_ApiBaseAdress);
                 var users = JsonConvert.DeserializeObject<UserDto[]>(respons);
-               return users;
+                return users;
             }
             catch (SocketException e)
             {
@@ -41,7 +43,7 @@ namespace Fastigheter.Data.Services
             {
                 Console.WriteLine(e.Message);
             }
-            catch(ArgumentNullException e)
+            catch (ArgumentNullException e)
             {
                 Console.WriteLine(e.Message);
             }
@@ -57,6 +59,30 @@ namespace Fastigheter.Data.Services
             string respons = await _httpClient.GetStringAsync(_ApiBaseAdress + "/" + username);
             var user = JsonConvert.DeserializeObject<UserDto>(respons);
             return user;
+        }
+
+
+        public async Task<bool> CreateUser(CreateUserDto newUser)
+        {
+            {
+                string sUrl = "http://localhost:5000/api/account/register";
+
+                string RealEstateJson = JsonConvert.SerializeObject(newUser);
+
+                var stringContent = new StringContent(RealEstateJson, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync(sUrl, stringContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+
+            }
         }
     }
 }

@@ -21,20 +21,9 @@
             <button @onclick="OnCancel" class="btn btn-secondary mr-auto">Cancel</button>
             <button class="btn btn-success ml-auto">Boka visning ></button>
         </div>
-        <AuthorizeView>
-            <Authorized>
-                <div class="card-body">
-                    <label>Kommentera</label>
-                     <input @bind-value="@newComment" class="form-control"/>
-                    <button class="btn btn-primary">
-                        Kommentera
-                    </button>
-                </div>
-            </Authorized>
-        </AuthorizeView>
+        <h3>Kommentarer</h3><br />
         @if (Comments != null)
         {
-            <h4>Kommentarer</h4><br />
             @foreach (var comment in Comments)
             {
                 <h8>@comment.UserName: @comment.Content</h8><br />
@@ -42,7 +31,7 @@
         }
         else
         {
-            <h2>Laddar in kommentarer...</h2>
+            <h2>Du måste vara inloggad för att se kommentarer..</h2>
         }
     </div>
 </div>
@@ -51,7 +40,7 @@
     [Parameter] public EventCallback OnCancel { get; set; }
     [Parameter] public RealEstateDto Realestate { get; set; }
     private IEnumerable<CommentDto> Comments;
-    private CommentDto newComment { get; set; } = new CommentDto();
+
 
     [CascadingParameter]
     public Task<AuthenticationState> AuthState { get; set; }
@@ -60,11 +49,14 @@
     {
 
         var authstate = await AuthState;
+
         var token = await LID.GetToken();
 
-        if(token != null)
+
+        if (token != null)
         {
-            Comments = await Service.GetComments(Realestate.Id,token);
+            Comments = await Service.GetComments(Realestate.Id, token);
+
         }
     }
 }

@@ -3,40 +3,59 @@
 @inject TestAuthStateProvider Auth
 @inject NavigationManager NaviManager
 @using Fastigheter.AuthProviders
+@using  System.Security.Claims
 @using System.ComponentModel.DataAnnotations;
+@using Microsoft.AspNetCore.Components.Authorization
+
+
+<style>
+    form {
+        width: 100%;
+    }
+</style>
 <div class="col-md-6 offset-md-3 mt-5">
     <div class="card">
-        <h5 class="card-header">Välkommen till Fastigheter Red</h5>
+        <h4 class="card-header">Välkommen till Fastigheter Red</h4>
         <div class="card-body">
-            <div class="offset-2" style="height:auto; width: 140%;">
-                <img src="https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png"
-                     alt="ikon kunde ej laddas" height="40" width="40" />
-                <EditForm Model="@model" OnSubmit="LogIn">
-                    <DataAnnotationsValidator />
-                    <div class="form-group">
-                        <label>Username</label>
-                        <InputText @bind-Value="model.UserName" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <InputText @bind-Value="model.Password" type="password" class="form-control" />
-                    </div>
-                    <button class="btn btn-primary">
-                        Logga in
-                    </button>
-                    @if (IncorrectCredentials)
-                    {
-                        <h7 style="color: #FF0000">Felaktigt Lösen/Username, vänligen försök igen</h7>
-                    }
-                </EditForm>
-            </div>
+            <img src="https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png"
+                 alt="ikon kunde ej laddas" height="40" width="40" />
+            <EditForm Model="@model" OnSubmit="LogIn">
+                <DataAnnotationsValidator />
+                <div class="form-group">
+                    <label>Username</label>
+                    <InputText @bind-Value="model.UserName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <InputText @bind-Value="model.Password" type="password" class="form-control" />
+                </div>
+                <button class="btn btn-primary">
+                    Logga in
+                </button>
+                @if (IncorrectCredentials)
+                {
+                    <h7 style="color: #FF0000">Felaktigt Lösen/Username, vänligen försök igen</h7>
+                }
+            </EditForm>
         </div>
     </div>
 </div>
+
 @code {
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    ClaimsPrincipal user;
     private LoginModel model = new LoginModel();
     string token = string.Empty;
     bool IncorrectCredentials;
+
+    protected override async Task OnInitializedAsync() // skyddar ifrån att användare skapar mer konton när hen är inloggad...
+    {
+        user = (await authenticationStateTask).User;
+        if (user.Identity.IsAuthenticated)
+            NaviManager.NavigateTo("");
+    }
 
     async void LogIn()
     {
@@ -52,6 +71,7 @@
         {
             IncorrectCredentials = true;
         }
+        this.StateHasChanged();
     }
 
     private class LoginModel
