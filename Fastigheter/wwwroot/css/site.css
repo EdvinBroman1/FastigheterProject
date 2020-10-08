@@ -182,7 +182,7 @@ app {
 }
 
 /* Team RED Fastigheter */
-.card {
+.card { 
     box-shadow: 0px 0px 19px 0px rgba(0,0,0,0.6);
     position: relative;
     display: -ms-flexbox;
@@ -197,21 +197,32 @@ app {
     margin-bottom: 20px;
 }
 
+.card-new 
+{
+    min-height: 100vh !important;
+    background-color: red !important;
+    color: white;
+    display: flex;
+    justify-content: center;
+
+}
+
+
 .card-img-top {
-    width: 100%;
+    width: 50%;
     height: 15vw;
-    object-fit: cover;
+    object-fit: contain;
 }
 .card-img-top:hover{
     cursor: pointer;
 }
 
-*/
 #RealEstates {
     padding-bottom: 9px;
 }
 
 
+/*------------------*/
 * {
     box-sizing: border-box
 }

@@ -21,9 +21,20 @@
             <button @onclick="OnCancel" class="btn btn-secondary mr-auto">Cancel</button>
             <button class="btn btn-success ml-auto">Boka visning ></button>
         </div>
-        <h3>Kommentarer</h3><br />
+        <AuthorizeView>
+            <Authorized>
+                <div class="card-body">
+                    <label>Kommentera</label>
+                     <input @bind-value="@newComment" class="form-control"/>
+                    <button class="btn btn-primary">
+                        Kommentera
+                    </button>
+                </div>
+            </Authorized>
+        </AuthorizeView>
         @if (Comments != null)
         {
+            <h4>Kommentarer</h4><br />
             @foreach (var comment in Comments)
             {
                 <h8>@comment.UserName: @comment.Content</h8><br />
@@ -40,7 +51,7 @@
     [Parameter] public EventCallback OnCancel { get; set; }
     [Parameter] public RealEstateDto Realestate { get; set; }
     private IEnumerable<CommentDto> Comments;
-
+    private CommentDto newComment { get; set; } = new CommentDto();
 
     [CascadingParameter]
     public Task<AuthenticationState> AuthState { get; set; }
@@ -53,7 +64,7 @@
 
         if(token != null)
         {
-          Comments = await Service.GetComments(Realestate.Id,token);
+            Comments = await Service.GetComments(Realestate.Id,token);
         }
     }
 }
