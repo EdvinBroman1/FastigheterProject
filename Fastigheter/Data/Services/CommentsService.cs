@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using TeamRedzFastigheter.Shared.Models.RealEstateModel;
 using TeamRedzFastigheter.Shared.Models.CommentModel;
 using TeamRedzFastigheter.Shared.Enitites;
+using System.Text;
 using System.Net.Http.Headers;
 
 namespace Fastigheter.Data.Services
@@ -16,7 +17,7 @@ namespace Fastigheter.Data.Services
     [Authorize]
     public class CommentsService
     {
-        private const string _ApiUrlBase = "http://localhost:5000/";
+        private string _ApiUrlBase = "http://localhost:5000/api/comments/";
         private readonly HttpClient _httpClient;
         public CommentsService(HttpClient httpClient)
         {
@@ -25,16 +26,8 @@ namespace Fastigheter.Data.Services
 
         public async Task<IEnumerable<CommentDto>> GetComments(int RealEstateId, string token)
         {
-
             IEnumerable<CommentDto> Comments;
-            string sUrl = _ApiUrlBase + "api/comments/" + RealEstateId;
-            Uri uri = new Uri(sUrl);
-            var requestMessage = new HttpRequestMessage();
-            requestMessage.Method = HttpMethod.Get;
-            requestMessage.RequestUri = uri;
-            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-
+            HttpRequestMessage requestMessage = GetRequestMessage(RealEstateId.ToString(), token);
             try
             {
                 var response = await _httpClient.SendAsync(requestMessage);
@@ -57,6 +50,33 @@ namespace Fastigheter.Data.Services
             }
 
             return null;
+        }
+
+        public async Task<bool> CreateComment(Comment comment, string token, int RealEstateId)
+        {
+            _ApiUrlBase = "http://localhost:5000/api/comments/";
+            string sUrl = _ApiUrlBase;
+            string commentJson = JsonConvert.SerializeObject(comment);
+
+            var stringContent = new StringContent(commentJson, Encoding.UTF8, "application/json");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.PostAsync(sUrl, stringContent);
+            return true;
+        }
+
+        private Task InvokeAsync(Action p)
+        {
+            throw new NotImplementedException();
+        }
+
+        private HttpRequestMessage GetRequestMessage(string value, string token)
+        {
+            Uri uri = new Uri(_ApiUrlBase + value);
+            var requestMessage = new HttpRequestMessage();
+            requestMessage.Method = HttpMethod.Get;
+            requestMessage.RequestUri = uri;
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            return requestMessage;
         }
     }
 }

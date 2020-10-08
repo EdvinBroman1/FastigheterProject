@@ -43,6 +43,12 @@
                         <input type="radio" value="none" id="radio_2" checked="@(RealEstate.Type == 2)" @onchange="@(()=> RealEstate.Type = 2)" name="type" />
                         <label for="radio_2" class="radio"><span>Villa</span></label>
                     </div>
+                    <input type="radio" value="none" id="radio_3" checked="@(RealEstate.Type == 3)" @onchange="@(()=> RealEstate.Type = 3)" name="type" />
+                    <label for="radio_3" class="radio"><span>Kontor</span></label>
+                </div>
+                <div>
+                    <input type="radio" value="none" id="radio_4" checked="@(RealEstate.Type == 4)" @onchange="@(()=> RealEstate.Type = 4)" name="type" />
+                    <label for="radio_4" class="radio"><span>LagerLokal</span></label>
                 </div>
             </div>
             <p>Address</p>
@@ -57,12 +63,12 @@
                 <p>Kan hyras?</p>
                 <div class="question-answer">
                     <div>
-                        <input type="radio" value="none" id="radio_3" checked="@(RealEstate.CanBeRented == true)" @onchange="@(()=> RealEstate.CanBeRented = true)" name="canberented" />
-                        <label for="radio_3" class="radio"><span>Ja</span></label>
+                        <input type="radio" value="none" id="radio_5" checked="@(RealEstate.CanBeRented == true)" @onchange="@(()=> RealEstate.CanBeRented = true)" name="canberented" />
+                        <label for="radio_5" class="radio"><span>Ja</span></label>
                     </div>
                     <div>
-                        <input type="radio" value="none" id="radio_4" checked="@(RealEstate.CanBeRented == false)" @onchange="@(()=> RealEstate.CanBeRented = false)" name="canberented" />
-                        <label for="radio_4" class="radio"><span>Nej</span></label>
+                        <input type="radio" value="none" id="radio_6" checked="@(RealEstate.CanBeRented == false)" @onchange="@(()=> RealEstate.CanBeRented = false)" name="canberented" />
+                        <label for="radio_6" class="radio"><span>Nej</span></label>
                     </div>
                 </div>
             </div>
