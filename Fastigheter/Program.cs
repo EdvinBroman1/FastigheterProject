@@ -33,7 +33,7 @@ namespace Fastigheter
             builder.Services.AddScoped<LoggedInData>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddHttpContextAccessor();
-           builder.Services.AddBaseAddressHttpClient();
+            builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             await builder.Build().RunAsync();
         }
