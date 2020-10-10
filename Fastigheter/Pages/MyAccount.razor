@@ -64,29 +64,6 @@
     {
         Console.WriteLine("SelectedValue value:" + SelectedValue);
         User = await userService.GetUser(name);
-        if (User.AverageRating.Equals(null))
-        {
-            Rating.UserId = User.Id;
-            Rating.UserName = User.UserName;
-            Rating.Value = 0; 
-            User.AverageRating = 0;
-
-            var authstate = await AuthState;
-            var token = await LID.GetToken();
-
-            if (!string.IsNullOrEmpty(token))
-            {
-                succesful = await RatingService.UpdateRating(Rating, token);
-                if (succesful)
-                {
-                    @if (!SelectedValue.Equals(0) || !SelectedValue.Equals(null))
-                    {
-                        User.AverageRating = User.AverageRating;
-                    }
-                }
-            }
-        }
-
     }
 
 
