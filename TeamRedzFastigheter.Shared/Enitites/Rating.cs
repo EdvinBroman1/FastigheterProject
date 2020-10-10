@@ -4,19 +4,17 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using TeamRedzFastigheter.Shared.Models.UserModel;
 
 namespace TeamRedzFastigheter.Shared.Enitites
 {
     public class Rating
     {
-        [Key]
-        public int Id { get; set; }
         [Required]
         [Range(1, 5)]
-        public int Ratings { get; set; }
-
+        public int Value { get; set; }
+        public string UserName { get; set; }
         [ForeignKey("UserId")]
-        public User User { get; set; }
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
     }
 }

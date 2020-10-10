@@ -61,12 +61,11 @@ namespace Fastigheter.Data.Services
             var stringContent = new StringContent(commentJson, Encoding.UTF8, "application/json");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.PostAsync(sUrl, stringContent);
-            return true;
-        }
-
-        private Task InvokeAsync(Action p)
-        {
-            throw new NotImplementedException();
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
         }
 
         private HttpRequestMessage GetRequestMessage(string value, string token)

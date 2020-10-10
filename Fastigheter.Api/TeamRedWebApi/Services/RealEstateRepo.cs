@@ -180,7 +180,7 @@ namespace TeamRedProject.Services
 
             if (user == null) return false;
             if (rater == null) return false;
-            if (rater.Id == user.Id) return false;
+           if (rater.Id == user.Id) return false;
 
             Rating rate = new Rating
             {

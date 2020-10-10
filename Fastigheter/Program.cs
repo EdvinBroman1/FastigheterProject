@@ -31,6 +31,7 @@ namespace Fastigheter
             builder.Services.AddSingleton<UserService>();
             builder.Services.AddSingleton<CommentsService>();
             builder.Services.AddScoped<LoggedInData>();
+            builder.Services.AddSingleton<RatingService>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });

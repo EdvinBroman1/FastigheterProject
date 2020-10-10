@@ -70,7 +70,10 @@ namespace TeamRedWebApi
             {
                 options.AddPolicy(
                     "Open",
-                    builder => builder.AllowAnyOrigin().AllowAnyHeader());
+                    builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
             });
             services.AddAuthentication(x =>
             {
