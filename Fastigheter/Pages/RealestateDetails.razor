@@ -1,0 +1,91 @@
+﻿@using TeamRedzFastigheter.Shared.Models.RealEstateModel
+@using TeamRedzFastigheter.Shared.Models.CommentModel
+@inject Fastigheter.Data.Services.CommentsService CommentService
+@inject Fastigheter.Data.Services.UserService UserService
+@inject Data.LoggedInData LID
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authorization;
+@using TeamRedzFastigheter.Shared.Models.UserModel
+<div class="dialog-container">
+    <div class="dialog">
+        <div class="dialog-title">
+            <h2>@Realestate.Title</h2>
+            @Realestate.Description
+        </div>
+        <form class="dialog-body">
+            <span class="mr-center">
+                Pris: <span class="price">@Realestate.PurchasePrice kr<br />@Realestate.Address@Realestate.Description</span>
+            </span>
+        </form>
+        <img class="dialog-image" src="https://i.gyazo.com/aa12d509b2c67f2dbc2bbe8f46b9417d.png" />
+        <AuthorizeView>
+            <Authorized>
+                <label style="margin-left: 15px">Kommentera</label>
+                <input style="width: 80%; margin-left:15px" @bind="@newComment.Content" />
+                <button style="margin-left: 15px" @onclick="@PostNewComment" class="btn btn-success">Post</button>
+            </Authorized>
+        </AuthorizeView>
+        <div class="dialog-buttons">
+            <button @onclick="OnCancel" class="btn btn-secondary mr-auto">Cancel</button>
+            <button class="btn btn-success ml-auto">Boka visning ></button>
+        </div>
+        @if (Comments != null)
+        {
+
+            <h4>Kommentarer</h4><br />
+            @foreach (var comment in Comments)
+            {
+    <h4 class="media-heading user_name"><a href="MyAccount/@comment.UserName">@comment.UserName</a><br />@comment.Content</h4>
+              <br />
+            }
+        }
+        else
+        {
+            <h2>Du måste vara inloggad för att se kommentarer..</h2>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public EventCallback OnCancel { get; set; }
+    [Parameter] public RealEstateDto Realestate { get; set; }
+    private IEnumerable<CommentDto> Comments;
+    private TeamRedzFastigheter.Shared.Enitites.Comment newComment { get; set; } = new TeamRedzFastigheter.Shared.Enitites.Comment();
+    private UserDto user = new UserDto();
+    private bool successFul;
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var authstate = await AuthState;
+        var token = await LID.GetToken();
+        if (!string.IsNullOrEmpty(token))
+        {
+            Comments = await CommentService.GetComments(Realestate.Id, token);
+        }
+    }
+    protected async Task PostNewComment()
+    {
+        var authstate = await AuthState;
+        var token = await LID.GetToken();
+        if (!string.IsNullOrEmpty(token))
+        {
+            user = await UserService.GetUser(authstate.User.Claims.FirstOrDefault
+            (
+            x => x.Type.Equals("unique_name"
+            , StringComparison.OrdinalIgnoreCase))?.Value
+            );
+            newComment.UserId = user.Id;
+            newComment.RealEstateId = Realestate.Id;
+            successFul = await CommentService.CreateComment(newComment, token, Realestate.Id);
+            if (successFul)
+            {
+                Comments = await CommentService.GetComments(Realestate.Id, token);
+            }
+        }
+
+    }
+}

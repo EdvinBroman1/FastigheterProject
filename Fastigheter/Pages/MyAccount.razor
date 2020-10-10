@@ -1,0 +1,123 @@
+﻿@page "/myaccount/{name}"
+@using Fastigheter.Data.Services
+@using TeamRedzFastigheter.Shared.Models.UserModel
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using TeamRedzFastigheter.Shared.Enitites
+@using TeamRedzFastigheter.Shared.Models.CommentModel
+@inject UserService userService
+@inject RatingService RatingService
+@inject Data.LoggedInData LID
+
+@attribute [Authorize]
+
+@if (User != null)
+{
+    <h3>Användare</h3>
+    <div class="list-group orders-list">
+        <div class="list-group-item">
+            <div class="col">
+                Namn: <strong>@User.UserName</strong>
+            </div>
+            <div class="col">
+
+                @if (User.AverageRating.Equals(null))
+                {
+                    <p> Rating: <strong>0</strong></p>
+                }
+                else
+                {
+                    <p>Rating:  <strong>@User.AverageRating</strong></p>
+                }
+            </div>
+            @if (Voted == 0)
+            {
+                <div class="col col-md-2">
+                    <select class="form-control " @onchange="selectedValue">
+                        <option>Poäng sätt @User.UserName</option>
+                        @foreach (var mod in RatingService.Points)
+                        {
+                            <option value="@mod">@mod</option>
+                        }
+
+                    </select>
+                </div>
+            }
+        </div>
+    </div>
+
+
+
+}
+
+@code {
+    [Parameter] public string name { get; set; }
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; }
+    public int Voted { get; set; }
+    UserDto User { get; set; } = new UserDto();
+    CommentDto comments = new CommentDto();
+    private Rating Rating { get; set; } = new Rating();
+
+    private bool succesful;
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("SelectedValue value:" + SelectedValue);
+        User = await userService.GetUser(name);
+        if (User.AverageRating.Equals(null))
+        {
+            Rating.UserId = User.Id;
+            Rating.UserName = User.UserName;
+            Rating.Value = 0; 
+            User.AverageRating = 0;
+
+            var authstate = await AuthState;
+            var token = await LID.GetToken();
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                succesful = await RatingService.UpdateRating(Rating, token);
+                if (succesful)
+                {
+                    @if (!SelectedValue.Equals(0) || !SelectedValue.Equals(null))
+                    {
+                        User.AverageRating = User.AverageRating;
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    public string SelectedValue = string.Empty;
+
+    public async Task selectedValue(ChangeEventArgs selectEvent)
+    {
+        SelectedValue = selectEvent.Value.ToString();
+        Rating.UserId = User.Id;
+        Rating.UserName = User.UserName;
+        Rating.Value = int.Parse(SelectedValue);
+        User.AverageRating = User.AverageRating + int.Parse(SelectedValue);
+
+        var authstate = await AuthState;
+        var token = await LID.GetToken();
+
+        if (!string.IsNullOrEmpty(token))
+        {
+            succesful = await RatingService.UpdateRating(Rating, token);
+            if (succesful)
+            {
+                @if (!SelectedValue.Equals(0) || !SelectedValue.Equals(null))
+                {
+                    User.AverageRating = User.AverageRating;
+                    Voted++;
+                }
+            }
+        }
+
+    }
+
+}
+
+
