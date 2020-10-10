@@ -10,6 +10,7 @@ using TeamRedzFastigheter.Shared.Models.RealEstateModel;
 using Fastigheter.Data;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Runtime.InteropServices;
 
 namespace Fastigheter.Data.Services
 {
@@ -71,11 +72,12 @@ namespace Fastigheter.Data.Services
             string sUrl = _ApiUrlBase + $"api/RealEstates";
             try
             {     
-                string respons = await _httpClient.GetStringAsync(sUrl);
+                var respons = await _httpClient.GetAsync(sUrl);
 
-                if (respons != null)
+                if (respons.IsSuccessStatusCode)
                 {
-                    realEstates = JsonConvert.DeserializeObject<RealEstateDto[]>(respons);
+                    var responseToString = await respons.Content.ReadAsStringAsync();
+                    realEstates = JsonConvert.DeserializeObject<RealEstateDto[]>(responseToString);
                     return realEstates;
                 }
             }
@@ -84,6 +86,10 @@ namespace Fastigheter.Data.Services
                 Console.WriteLine(e.Message);
             }
             catch (HttpRequestException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
@@ -103,10 +109,12 @@ namespace Fastigheter.Data.Services
 
             try
             {
-                string respons = await _httpClient.GetStringAsync(sUrl);
-                if (respons != null)
+                    var respons = await _httpClient.GetAsync(sUrl);
+
+                if (respons.IsSuccessStatusCode)
                 {
-                    realEstates = JsonConvert.DeserializeObject<RealEstateDto[]>(respons);
+                    var responseToString = await respons.Content.ReadAsStringAsync();
+                    realEstates = JsonConvert.DeserializeObject<RealEstateDto[]>(responseToString);
                     return realEstates;
                 }
             }
@@ -115,6 +123,10 @@ namespace Fastigheter.Data.Services
                 Console.WriteLine(e.Message);
             }
             catch (HttpRequestException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch(Exception e)
             {
                 Console.WriteLine(e.Message);
             }

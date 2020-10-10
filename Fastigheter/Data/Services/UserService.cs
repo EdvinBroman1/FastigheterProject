@@ -56,10 +56,29 @@ namespace Fastigheter.Data.Services
 
         public async Task<UserDto> GetUser(string username)
         {
-            string respons = await _httpClient.GetStringAsync(_ApiBaseAdress + "/" + username);
-            var user = JsonConvert.DeserializeObject<UserDto>(respons);
+            try
+            {
+                string respons = await _httpClient.GetStringAsync(_ApiBaseAdress + "/" + username);
+                var user = JsonConvert.DeserializeObject<UserDto>(respons);
+                return user;
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
 
-            return user;
+            }
+            return null;
         }
 
 
@@ -71,16 +90,37 @@ namespace Fastigheter.Data.Services
                 string RealEstateJson = JsonConvert.SerializeObject(newUser);
 
                 var stringContent = new StringContent(RealEstateJson, Encoding.UTF8, "application/json");
+                try
+                {
+                    var response = await _httpClient.PostAsync(sUrl, stringContent);
 
-                var response = await _httpClient.PostAsync(sUrl, stringContent);
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
+                catch (SocketException e)
                 {
-                    return false;
+                    Console.WriteLine(e.Message);
                 }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+
+                }
+
+                return false;
 
 
             }

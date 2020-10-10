@@ -44,6 +44,10 @@ namespace Fastigheter.Data.Services
             {
                 Console.WriteLine(e.Message);
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             finally
             {
 

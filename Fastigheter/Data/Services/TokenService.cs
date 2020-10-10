@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,9 +38,30 @@ namespace Fastigheter.Data.Services
 
             string json = JsonConvert.SerializeObject(values);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync(_ApiUrlBase, httpContent);
-            str = await response.Content.ReadAsStringAsync();
-            return str;
+            try
+            {
+                var response = await _httpClient.PostAsync(_ApiUrlBase, httpContent);
+                str = await response.Content.ReadAsStringAsync();
+                return str;
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+
+            }
+            return null;
+
 
         }
 
